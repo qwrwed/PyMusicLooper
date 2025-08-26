@@ -1,5 +1,6 @@
 import logging
 import os
+from pathlib import Path
 import sys
 from contextlib import contextmanager
 from typing import List, Literal, Optional, Tuple
@@ -329,6 +330,7 @@ class LoopExportHandler(LoopHandler):
             else:
                 progress.stop()
                 rich_console.print(message)
+            return output_path
         # Usually: unknown file format specified; raised by soundfile
         except ValueError as e:
             logging.error(e)

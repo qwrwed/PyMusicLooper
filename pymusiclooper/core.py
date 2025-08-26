@@ -2,6 +2,7 @@
 used for programmatic access to the CLI's main features."""
 
 import os
+from pathlib import Path
 import shutil
 from math import ceil
 from typing import List, Optional, Tuple, Union
@@ -159,7 +160,7 @@ class MusicLooper:
         disable_fade_out: bool = False,
         format: str = "WAV",
         output_dir: Optional[str] = None,
-    ) -> str:
+    ) -> Path:
         """Extends the audio by looping to at least the specified length.
         Returns the path to the extended audio file. 
 
@@ -173,9 +174,9 @@ class MusicLooper:
             output_dir (str, optional): Path to the output directory. Defaults to the same directory as the source audio file.
         """
         if output_dir is not None:
-            out_path = os.path.join(output_dir, self.mlaudio.filename)
+            out_path = Path(output_dir, self.mlaudio.filename)
         else:
-            out_path = os.path.abspath(self.mlaudio.filepath)
+            out_path = Path(self.mlaudio.filepath).absolute()
 
         if extended_length < self.mlaudio.total_duration:
             raise ValueError(
@@ -229,8 +230,8 @@ class MusicLooper:
         extended_audio_length_fmt = (
             f"{duration_mins:d}m{duration_sec:02d}s"
         )
-        output_file_path = (
-            f"{out_path}-extended-{extended_audio_length_fmt}.{format.lower()}"
+        output_file_path = out_path.with_name(
+            f"{out_path.name}-extended-{extended_audio_length_fmt}.{format.lower()}"
         )
 
         # Export with buffered write logic to avoid storing the entire extended audio in-memory
