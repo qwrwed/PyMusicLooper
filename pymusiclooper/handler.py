@@ -345,6 +345,7 @@ class LoopExportHandler(LoopHandler):
         # Usually: unknown file format specified; raised by soundfile
         except ValueError as e:
             logging.error(e)
+            raise
 
     def txt_export_runner(self, loop_start: int, loop_end: int):
         if self.alt_export_top != 0:
