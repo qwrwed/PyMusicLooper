@@ -210,7 +210,7 @@ class LoopExportHandler(LoopHandler):
         tag_offset: Optional[bool] = None,
         batch_mode: bool = False,
         extended_length: float = 0,
-        fade_length: float = 0,
+        fade_length: float = 5,
         disable_fade_out: bool = False,
         **kwargs,
     ):
