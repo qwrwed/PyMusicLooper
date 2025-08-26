@@ -240,11 +240,15 @@ class LoopExportHandler(LoopHandler):
         self.fade_length = fade_length
         self._is_autocreated_outdir = False
 
-    def run(self):
+    def get_loop_start_end(self):
         self.loop_pair_list = self.get_all_loop_pairs()
         chosen_loop_pair = self.choose_loop_pair(self.interactive_mode)
         loop_start = chosen_loop_pair.loop_start
         loop_end = chosen_loop_pair.loop_end
+        return loop_start, loop_end
+
+    def run(self):
+        loop_start, loop_end = self.get_loop_start_end()
 
         # Runners that do not need an output directory
         if self.to_stdout:
@@ -298,7 +302,14 @@ class LoopExportHandler(LoopHandler):
         except ValueError as e:
             logging.error(e)
 
-    def extend_track_runner(self, loop_start: int, loop_end: int):
+    def extend_track_runner(
+        self,
+        loop_start: int | None = None,
+        loop_end: int | None = None,
+    ) -> Path:
+        assert not ((loop_start is None) ^ (loop_end is None))
+        if loop_start == None or loop_end == None:
+            loop_start, loop_end = self.get_loop_start_end()
         # Add a progress bar since it could take some time to export
         # Do not enable if batch mode is active, since it already has a progress bar
         if not self.batch_mode:
