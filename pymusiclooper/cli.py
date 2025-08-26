@@ -258,4 +258,4 @@ def print_exception(e: Exception):
         logging.error(e)
 
 if __name__ == "__main__":
-    cli_main()
+    cli_main()  # pylint: disable=no-value-for-parameter
